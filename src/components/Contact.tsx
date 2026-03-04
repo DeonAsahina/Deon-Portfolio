@@ -13,7 +13,7 @@ export default function Contact() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
             <motion.a 
-              href="https://discord.com/users/737946187830919218"
+              href="https://discord.com/users/(YOU DISCORD ID)"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.02 }}
