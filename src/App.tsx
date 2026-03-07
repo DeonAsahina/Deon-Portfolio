@@ -217,11 +217,9 @@ export default function App() {
                   <section>
                     <h3 className="text-[11px] font-bold text-white uppercase tracking-wider mb-2">About Me</h3>
                     <div className="text-sm text-discord-text-normal leading-relaxed space-y-3">
-                      <p>Hai! Saya seorang developer lewat kode dan desainer lewat selera 😎</p>
-                      <p>
-                        Saya membuat bot Discord yang fungsional dan desain yang nggak bikin mata sakit. 
-                        Saya berspesialisasi dalam BDScript dan fokus pada performa yang lancar, 
-                        pengalaman yang bersih, dan tanpa drama (kecuali kadang di dalam kodenya 😅).
+                      <p>I am a developer focused on building Discord bots and creating clean, efficient user interfaces.
+
+With a specialization in BDScript, I develop bot systems that are stable, well-structured, and easy to use. Every project I work on is designed with attention to performance, user experience, and design details to ensure the final product is not only functional but also professional in appearance.
                       </p>
                     </div>
                   </section>
