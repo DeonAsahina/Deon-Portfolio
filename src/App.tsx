@@ -151,7 +151,7 @@ export default function App() {
       >
         <div className="h-32 relative overflow-hidden">
           <img 
-            src="https://cdn.discordapp.com/attachments/1462713721439784960/1478695161142710272/IMG_20260304_180604.jpg?ex=69a955af&is=69a8042f&hm=78b7dd78ab23ea1e8b53f90a1ed86f38c39bdcbaad5dad9b1823541085959c17&" 
+            src="https://cdn.discordapp.com/attachments/1131766991192080434/1480603358669570138/IMG_20260304_180604.jpg?ex=69b046d4&is=69aef554&hm=4a22e5db637321769bb3bb3f0e5ee8d57fd3913af6afba2e9b5c0cd7908bd0f7&" 
             alt="Banner" 
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
