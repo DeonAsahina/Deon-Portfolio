@@ -58,7 +58,7 @@ const PROJECTS: Project[] = [
     id: '1',
     name: 'Ziyan APP',
     description: 'A high-performance Discord bot developed using BDScript combining smart automation, clean embeds, and efficient system design.',
-    image: 'https://cdn.discordapp.com/attachments/1462713721439784960/1478734583305474179/IMG_20260226_153319.png?ex=69a97a66&is=69a828e6&hm=78ec95b1dec5e08cb1f4bb54101619fafc993cb9a5d527e5a76af1786698ff9e&',
+    image: 'https://cdn.discordapp.com/attachments/1462713721439784960/1478734583305474179/IMG_20260226_153319.png?ex=69b011e6&is=69aec066&hm=ed3151de9c7936a0ae13123335215e24e0d578bcd6cf585df8d68b278aaf9aef&',
     tags: ['BDScript', 'Discord Bot', 'Automation'],
     link: 'https://discord.com/oauth2/authorize?client_id=1317864266140745800&permissions=8&integration_type=0&scope=bot'
   }
