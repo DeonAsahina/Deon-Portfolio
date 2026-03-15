@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Github, 
-  Twitter, 
-  ExternalLink, 
-  Mail, 
-  Code2, 
-  User2, 
-  Briefcase, 
-  Gamepad2,
-  Calendar,
+  LayoutGrid, 
+  User, 
+  Users, 
+  Circle,
+  Code2,
+  Share2,
+  Mail,
+  ChevronRight,
   MessageSquare,
-  Globe,
   Plus,
-  Loader2,
-  Palette,
-  Instagram
+  Minus,
+  Send,
+  Music,
+  Play,
+  Pause
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -24,7 +24,7 @@ interface DiscordUser {
   username: string;
   avatar: string;
   discriminator: string;
-  public_flags: number;
+  avatar_decoration?: string;
 }
 
 interface LanyardData {
@@ -33,84 +33,35 @@ interface LanyardData {
   activities: any[];
 }
 
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  tags: string[];
-  link: string;
-  github?: string;
-}
-
-interface Skill {
-  name: string;
-  icon: React.ReactNode;
-  color: string;
-}
-
 // --- Constants ---
-const DISCORD_ID = '737946187830919218';
-
-// --- Mock Data ---
-const PROJECTS: Project[] = [
-  {
-    id: '1',
-    name: 'Ziyan APP',
-    description: 'A high-performance Discord bot developed using BDScript combining smart automation, clean embeds, and efficient system design.',
-    image: 'https://cdn.discordapp.com/attachments/1462713721439784960/1478734583305474179/IMG_20260226_153319.png?ex=69b011e6&is=69aec066&hm=ed3151de9c7936a0ae13123335215e24e0d578bcd6cf585df8d68b278aaf9aef&',
-    tags: ['BDScript', 'Discord Bot', 'Automation'],
-    link: 'https://discord.com/oauth2/authorize?client_id=1317864266140745800&permissions=8&integration_type=0&scope=bot'
-  }
-];
-
-const SKILLS: Skill[] = [
-  { name: 'BDScript', icon: <Code2 size={14} />, color: 'bg-[#5865F2]/20 text-[#5865F2]' },
-  { name: 'PixelLab', icon: <Palette size={14} />, color: 'bg-[#00FF00]/20 text-[#00FF00]' },
-];
-
-// --- Components ---
-
-const StatusIndicator = ({ status }: { status: 'online' | 'idle' | 'dnd' | 'offline' }) => {
-  const colors = {
-    online: 'bg-[#23a55a]',
-    idle: 'bg-[#f0b232]',
-    dnd: 'bg-[#f23f43]',
-    offline: 'bg-[#80848e]'
-  };
-
-  return (
-    <div className={`absolute bottom-1 right-1 w-6 h-6 rounded-full border-[5px] border-[#232428] ${colors[status]}`}>
-      {status === 'idle' && (
-        <div className="absolute -top-1 -left-1 w-3 h-3 bg-[#232428] rounded-full" />
-      )}
-      {status === 'dnd' && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-1 bg-[#232428] rounded-full" />
-      )}
-    </div>
-  );
-};
+const DISCORD_ID = '737946187830919218'; // ID Discord Anda
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'about' | 'projects' | 'contact'>('about');
-  const [note, setNote] = useState('');
+  const [activeTab, setActiveTab] = useState('profile');
   const [discordData, setDiscordData] = useState<LanyardData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(err => console.error("Playback failed:", err));
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   useEffect(() => {
     const fetchDiscordData = async () => {
       try {
         const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
         const json = await response.json();
-        
-        if (json.success) {
-          setDiscordData(json.data);
-        } else {
-          setError('User not found in Lanyard. Please join the Lanyard Discord server.');
-        }
+        if (json.success) setDiscordData(json.data);
       } catch (err) {
-        setError('Failed to fetch Discord data.');
+        console.error('Failed to fetch Discord data.');
       } finally {
         setLoading(false);
       }
@@ -121,249 +72,334 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#313338]">
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-        >
-          <Loader2 size={48} className="text-discord-blurple" />
-        </motion.div>
+  const status = discordData?.discord_status || 'offline';
+  const avatarUrl = discordData 
+    ? `https://cdn.discordapp.com/avatars/${discordData.discord_user.id}/${discordData.discord_user.avatar}.png?size=512`
+    : "https://picsum.photos/seed/kydo/512/512";
+
+  const decorationUrl = discordData?.discord_user.avatar_decoration
+    ? `https://cdn.discordapp.com/avatar-decorations/${discordData.discord_user.id}/${discordData.discord_user.avatar_decoration}.png?size=512`
+    : null;
+
+  const statusColor = {
+    online: 'text-[#23a55a]',
+    idle: 'text-[#f0b232]',
+    dnd: 'text-[#f23f43]',
+    offline: 'text-[#80848e]'
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-white font-sans pb-24 overflow-x-hidden">
+      <AnimatePresence mode="wait">
+        {activeTab === 'profile' && (
+          <motion.div
+            key="profile"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Header / Profile Section */}
+            <div className="flex flex-col items-center pt-12 pb-8 px-6">
+              {/* Profile Decoration & Avatar */}
+              <div className="relative mb-6">
+                <div className="relative w-32 h-32 flex items-center justify-center">
+                  <div className={`${decorationUrl ? 'w-[85%] h-[85%]' : 'w-full h-full'} rounded-full overflow-hidden border-2 border-white/10 transition-all duration-300`}>
+                    <img 
+                      src={avatarUrl} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  
+                  {decorationUrl && (
+                    <img 
+                      src={decorationUrl} 
+                      alt="Discord Decoration" 
+                      className="absolute inset-0 w-full h-full pointer-events-none z-10"
+                      referrerPolicy="no-referrer"
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* Name & Title */}
+              <div className="text-center space-y-1">
+                <div className="flex items-center justify-center gap-2">
+                  <h1 className="text-2xl font-bold tracking-tight">DEON</h1>
+                  <img 
+                    src="https://cdn.discordapp.com/attachments/1462713721439784960/1482225611182440659/20260314_115506.png?ex=69b62dac&is=69b4dc2c&hm=f63804bb4226117c11d6059f0e0094daaf90a8042a2479f8f25fad3c6d013b76&" 
+                    alt="Verified" 
+                    className="w-5 h-5 object-contain"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                <p className="text-gray-400 font-medium text-sm">Animation Enthusiast</p>
+              </div>
+
+              {/* Status Indicator */}
+              <div className="mt-4 flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10">
+                {status === 'idle' || status === 'offline' ? (
+                  <motion.img
+                    src={status === 'idle' 
+                      ? "https://cdn.discordapp.com/attachments/1462713721439784960/1482227451710148679/20260314_120224.png?ex=69b62f62&is=69b4dde2&hm=948257e770c819a421e92437638c5e3d6830351d5eca708d91ac1343b5962b44&"
+                      : "https://cdn.discordapp.com/attachments/1462713721439784960/1482228962129084436/20260314_120817.png?ex=69b630cb&is=69b4df4b&hm=0b844f375143e29fe3fcfde785dfccef3bebc850beedab1a8b0c69f6acfb8c4c&"
+                    }
+                    alt={`${status} Status`}
+                    className="w-3 h-3 object-contain"
+                    animate={{ opacity: [1, 0.4, 1] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <Circle size={10} className={`fill-current ${statusColor[status]}`} />
+                )}
+                <span className="text-xs font-medium text-gray-400 lowercase">{status}</span>
+              </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="px-8 space-y-10 max-w-2xl mx-auto">
+              {/* About Me */}
+              <section>
+                <div className="flex items-center gap-3 mb-4">
+                  <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-gray-200">About Me</h2>
+                  <button 
+                    onClick={togglePlay}
+                    className="p-1.5 rounded-full bg-white/5 border border-white/10 text-blue-400 hover:bg-white/10 transition-colors flex items-center justify-center"
+                    title={isPlaying ? "Pause Music" : "Play Music"}
+                  >
+                    {isPlaying ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
+                  </button>
+                  <audio 
+                    ref={audioRef}
+                    src="https://files.catbox.moe/8y9v6n.mp3" 
+                    onEnded={() => setIsPlaying(false)}
+                  />
+                </div>
+                <p className="text-gray-400 leading-relaxed text-sm">
+                  Hi! I’m <span className="text-white font-semibold">DEON</span>, an enthusiastic animation fan who loves watching Donghua and also enjoys swimming.
+                </p>
+              </section>
+
+              {/* Personal Information */}
+              <section>
+                <h2 className="text-sm font-bold mb-4 tracking-[0.2em] uppercase text-gray-200">Personal Information</h2>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-start">
+                    <span className="w-24 text-gray-500 flex items-center gap-2">
+                      <Circle size={4} className="fill-current" /> Name
+                    </span>
+                    <span className="text-gray-400">: Deon</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="w-24 text-gray-500 flex items-center gap-2">
+                      <Circle size={4} className="fill-current" /> Hobby
+                    </span>
+                    <span className="text-gray-400">: Playing Games, Watching</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="w-24 text-gray-500 flex items-center gap-2">
+                      <Circle size={4} className="fill-current" /> Region
+                    </span>
+                    <span className="text-gray-400">: Manado, Indonesia</span>
+                  </li>
+                </ul>
+              </section>
+
+              {/* Tech Stack & Tools */}
+              <section>
+                <h2 className="text-sm font-bold mb-6 tracking-[0.2em] uppercase text-gray-200">Tech Stack & Tools</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">
+                    <div className="p-2 bg-blue-500/10 rounded-lg text-blue-400">
+                      <Code2 size={18} />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-gray-500 uppercase font-bold">Development</p>
+                      <p className="text-xs font-medium">BDScript</p>
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">
+                    <div className="relative w-9 h-9 flex-shrink-0">
+                      <div className="absolute inset-0 bg-[#24a1f3] rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                        P
+                      </div>
+                      <img 
+                        src="https://cdn.discordapp.com/attachments/1462713721439784960/1482201854141137058/1773454800560.png?ex=69b6178c&is=69b4c60c&hm=4ee7876258dcf77042e1c1e8e10007b57d4934e31536e53705d25c82a90968b6&" 
+                        alt="PixelLab" 
+                        className="absolute inset-0 w-full h-full object-contain rounded-lg z-10"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-gray-500 uppercase font-bold">Design</p>
+                      <p className="text-xs font-medium">PixelLab</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </motion.div>
+        )}
+
+        {activeTab === 'socials' && (
+          <motion.div
+            key="socials"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="pt-12 px-6 max-w-2xl mx-auto"
+          >
+            <div className="flex flex-col items-center mb-12">
+              <div className="flex items-center gap-4 mb-4">
+                <Share2 size={32} className="text-blue-500" />
+                <h1 className="text-4xl font-bold tracking-tight">Contact Me</h1>
+              </div>
+              <div className="w-32 h-1 bg-blue-600 rounded-full mb-8" />
+              <p className="text-gray-400 text-center text-sm max-w-xs leading-relaxed">
+                Feel free to contact me through the platforms below.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <SocialCard 
+                icon={
+                  <img 
+                    src="https://cdn.discordapp.com/attachments/1462713721439784960/1482208970449096704/Discord_Logo_Vector_Art_Icons_and_Graphics_for_Free_Download.jpg?ex=69b61e2c&is=69b4ccac&hm=9fe613f7fd06274261d8a08cb39138553dcc11b35b6f252461aa6139b6f127ee&" 
+                    alt="Discord" 
+                    className="w-full h-full object-cover rounded-2xl"
+                    referrerPolicy="no-referrer"
+                  />
+                } 
+                title="@deonhere." 
+                description="Chat with me on Discord"
+                color="bg-transparent"
+                href="https://discord.com/users/737946187830919218"
+              />
+              <SocialCard 
+                icon={
+                  <img 
+                    src="https://cdn.discordapp.com/attachments/1462713721439784960/1482208970449096704/Discord_Logo_Vector_Art_Icons_and_Graphics_for_Free_Download.jpg?ex=69b61e2c&is=69b4ccac&hm=9fe613f7fd06274261d8a08cb39138553dcc11b35b6f252461aa6139b6f127ee&" 
+                    alt="Discord Server" 
+                    className="w-full h-full object-cover rounded-2xl"
+                    referrerPolicy="no-referrer"
+                  />
+                } 
+                title="Discord Server" 
+                description="Join my Discord server"
+                color="bg-transparent"
+                href="https://discord.gg/hvwZCXWEnh"
+              />
+              <SocialCard 
+                icon={<Send size={24} />} 
+                title="@deonats" 
+                description="Message me on Telegram"
+                color="bg-[#0088cc]"
+                href="https://t.me/deonats"
+              />
+            </div>
+
+            <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-3 opacity-50">
+              <button className="p-2 bg-white/10 rounded-full backdrop-blur-md border border-white/10">
+                <Plus size={20} />
+              </button>
+              <button className="p-2 bg-white/10 rounded-full backdrop-blur-md border border-white/10">
+                <Minus size={20} />
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {activeTab === 'project' && (
+          <motion.div
+            key="project"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="pt-20 px-8 text-center"
+          >
+            <LayoutGrid size={48} className="mx-auto mb-4 text-gray-600" />
+            <h2 className="text-xl font-bold mb-2">Projects</h2>
+            <p className="text-gray-500">Coming soon...</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-xl border-t border-white/5 px-4 py-3 z-50">
+        <div className="max-w-md mx-auto flex justify-around items-center">
+          <NavItem 
+            icon={<LayoutGrid size={18} />} 
+            label="Project" 
+            active={activeTab === 'project'} 
+            onClick={() => setActiveTab('project')} 
+          />
+          <NavItem 
+            icon={<User size={18} />} 
+            label="Profile" 
+            active={activeTab === 'profile'} 
+            onClick={() => setActiveTab('profile')} 
+          />
+          <NavItem 
+            icon={<Users size={18} />} 
+            label="Socials" 
+            active={activeTab === 'socials'} 
+            onClick={() => setActiveTab('socials')} 
+          />
+        </div>
+      </nav>
+    </div>
+  );
+}
+
+function NavItem({ icon, label, active, onClick }: { icon: React.ReactNode, label: string, active: boolean, onClick: () => void }) {
+  return (
+    <button 
+      onClick={onClick}
+      className={`flex flex-col items-center gap-1 transition-all duration-300 ${active ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+    >
+      <div className={`p-2 rounded-xl transition-all ${active ? 'bg-white/10' : ''}`}>
+        {icon}
       </div>
+      <span className="text-[9px] font-bold uppercase tracking-tighter">{label}</span>
+      {active && (
+        <motion.div 
+          layoutId="nav-indicator"
+          className="w-3 h-0.5 bg-white rounded-full mt-0.5"
+        />
+      )}
+    </button>
+  );
+}
+
+function SocialCard({ icon, title, description, color, href }: { icon: React.ReactNode, title: string, description: string, color: string, href?: string }) {
+  const content = (
+    <motion.div 
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      className="p-6 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-6 cursor-pointer hover:bg-white/10 transition-all w-full text-left"
+    >
+      <div className={`w-14 h-14 rounded-2xl ${color} flex items-center justify-center text-white shadow-lg flex-shrink-0`}>
+        {icon}
+      </div>
+      <div className="flex-1">
+        <h3 className="text-xl font-bold tracking-tight mb-1">{title}</h3>
+        <p className="text-gray-400 text-sm">{description}</p>
+      </div>
+    </motion.div>
+  );
+
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className="block w-full">
+        {content}
+      </a>
     );
   }
 
-  const avatarUrl = discordData 
-    ? `https://cdn.discordapp.com/avatars/${discordData.discord_user.id}/${discordData.discord_user.avatar}.png?size=256`
-    : "https://picsum.photos/seed/avatar/128/128";
-
-  const username = discordData?.discord_user.username || "Karlen Wahongan";
-  const discriminator = discordData?.discord_user.discriminator !== "0" ? `#${discordData?.discord_user.discriminator}` : "";
-  const status = discordData?.discord_status || "offline";
-
-  return (
-    <div className="min-h-screen flex items-center justify-center p-4 md:p-8 bg-[#313338]">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-[600px] bg-[#232428] rounded-lg overflow-hidden shadow-2xl border border-black/20"
-      >
-        <div className="h-32 relative overflow-hidden">
-          <img 
-            src="https://cdn.discordapp.com/attachments/1131766991192080434/1480603358669570138/IMG_20260304_180604.jpg?ex=69b046d4&is=69aef554&hm=4a22e5db637321769bb3bb3f0e5ee8d57fd3913af6afba2e9b5c0cd7908bd0f7&" 
-            alt="Banner" 
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-          <button className="absolute top-4 right-4 p-1.5 bg-black/40 hover:bg-black/60 rounded-full transition-colors">
-            <Plus size={18} className="text-white" />
-          </button>
-        </div>
-
-        <div className="px-4 pb-4 relative">
-          <div className="absolute -top-12 left-4">
-            <div className="relative">
-              <img 
-                src={avatarUrl} 
-                alt="Avatar" 
-                className="w-24 h-24 rounded-full border-[6px] border-[#232428] object-cover bg-[#313338]"
-                referrerPolicy="no-referrer"
-              />
-              <StatusIndicator status={status} />
-            </div>
-          </div>
-
-          <div className="pt-16 flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-white">{username}</h1>
-              <span className="text-discord-text-muted text-lg font-medium">{discriminator}</span>
-            </div>
-            <div className="text-discord-text-normal text-sm">Developer & Designer</div>
-          </div>
-
-          <div className="h-[1px] bg-[#3f4147] my-4" />
-
-          <div className="flex gap-4 mb-4">
-            {(['about', 'projects', 'contact'] as const).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`text-sm font-medium pb-1 transition-colors relative ${
-                  activeTab === tab ? 'text-white' : 'text-discord-text-muted hover:text-discord-text-normal'
-                }`}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                {activeTab === tab && (
-                  <motion.div 
-                    layoutId="activeTab"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-white"
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-
-          <div className="min-h-[300px] discord-scrollbar overflow-y-auto pr-1">
-            <AnimatePresence mode="wait">
-              {activeTab === 'about' && (
-                <motion.div
-                  key="about"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  className="space-y-6"
-                >
-                  <section>
-                    <h3 className="text-[11px] font-bold text-white uppercase tracking-wider mb-2">About Me</h3>
-                    <div className="text-sm text-discord-text-normal leading-relaxed space-y-3">
-                      <p>I am a developer focused on building Discord bots and creating clean, efficient user interfaces.
-
-With a specialization in BDScript, I develop bot systems that are stable, well-structured, and easy to use. Every project I work on is designed with attention to performance, user experience, and design details to ensure the final product is not only functional but also professional in appearance.
-                      </p>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h3 className="text-[11px] font-bold text-white uppercase tracking-wider mb-2">Roles</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {SKILLS.map((skill) => (
-                        <div 
-                          key={skill.name}
-                          className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium ${skill.color}`}
-                        >
-                          {skill.icon}
-                          {skill.name}
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-
-                  <section>
-                    <h3 className="text-[11px] font-bold text-white uppercase tracking-wider mb-2">Note</h3>
-                    <input 
-                      type="text" 
-                      placeholder="Click to add a note"
-                      value={note}
-                      onChange={(e) => setNote(e.target.value)}
-                      className="w-full bg-transparent text-xs text-discord-text-normal placeholder:text-discord-text-muted focus:outline-none"
-                    />
-                  </section>
-                </motion.div>
-              )}
-
-              {activeTab === 'projects' && (
-                <motion.div
-                  key="projects"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  className="space-y-4"
-                >
-                  <h3 className="text-[11px] font-bold text-white uppercase tracking-wider mb-2">Recent Activities</h3>
-                  {PROJECTS.map((project) => (
-                    <a 
-                      key={project.id}
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block bg-[#2b2d31] rounded-lg p-3 border border-black/10 hover:bg-[#313338] transition-colors group cursor-pointer"
-                    >
-                      <div className="flex gap-3">
-                        <img 
-                          src={project.image} 
-                          alt={project.name}
-                          className="w-16 h-16 rounded-md object-cover flex-shrink-0"
-                          referrerPolicy="no-referrer"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between">
-                            <h4 className="text-sm font-bold text-white truncate">{project.name}</h4>
-                            <div className="flex gap-2">
-                              <ExternalLink size={14} className="text-discord-text-muted group-hover:text-white transition-colors" />
-                            </div>
-                          </div>
-                          <p className="text-xs text-discord-text-muted line-clamp-2 mt-1">
-                            {project.description}
-                          </p>
-                          <div className="flex gap-2 mt-2">
-                            {project.tags.map(tag => (
-                              <span key={tag} className="text-[10px] text-discord-blurple font-semibold">#{tag}</span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  ))}
-                </motion.div>
-              )}
-
-              {activeTab === 'contact' && (
-                <motion.div
-                  key="contact"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  className="space-y-4"
-                >
-                  <h3 className="text-[11px] font-bold text-white uppercase tracking-wider mb-2">Connections</h3>
-                  <div className="grid grid-cols-1 gap-2">
-                    <a href="https://discord.com/users/737946187830919218" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-3 bg-[#2b2d31] rounded-lg hover:bg-[#313338] transition-colors group">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-[#5865F2]/10 rounded-md group-hover:bg-[#5865F2]/20 transition-colors">
-                          <MessageSquare size={18} className="text-[#5865F2]" />
-                        </div>
-                        <span className="text-sm text-discord-text-normal">Discord</span>
-                      </div>
-                      <span className="text-xs text-discord-text-muted">deonhere.</span>
-                    </a>
-                    <a href="mailto:ddeon2669@gmail.com" className="flex items-center justify-between p-3 bg-[#2b2d31] rounded-lg hover:bg-[#313338] transition-colors group">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-white/5 rounded-md group-hover:bg-white/10 transition-colors">
-                          <Mail size={18} className="text-discord-text-normal" />
-                        </div>
-                        <span className="text-sm text-discord-text-normal">Email</span>
-                      </div>
-                      <span className="text-xs text-discord-text-muted">ddeon2669@gmail.com</span>
-                    </a>
-                    <a href="https://www.instagram.com/deon.cromwell" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-3 bg-[#2b2d31] rounded-lg hover:bg-[#313338] transition-colors group">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-[#E4405F]/10 rounded-md group-hover:bg-[#E4405F]/20 transition-colors">
-                          <Instagram size={18} className="text-[#E4405F]" />
-                        </div>
-                        <span className="text-sm text-discord-text-normal">Instagram</span>
-                      </div>
-                      <span className="text-xs text-discord-text-muted">@deon.cromwell</span>
-                    </a>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-
-        <div className="bg-[#1e1f22] px-4 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${
-              status === 'online' ? 'bg-[#23a55a]' : 
-              status === 'idle' ? 'bg-[#f0b232]' : 
-              status === 'dnd' ? 'bg-[#f23f43]' : 
-              'bg-[#80848e]'
-            }`} />
-            <span className="text-[10px] font-bold text-discord-text-muted uppercase">{status}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Gamepad2 size={14} className="text-discord-text-muted cursor-pointer hover:text-white transition-colors" />
-            <Briefcase size={14} className="text-discord-text-muted cursor-pointer hover:text-white transition-colors" />
-            <User2 size={14} className="text-discord-text-muted cursor-pointer hover:text-white transition-colors" />
-          </div>
-        </div>
-      </motion.div>
-
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-20">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-discord-blurple blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-discord-dnd blur-[120px] rounded-full" />
-      </div>
-    </div>
-  );
-  }
+  return content;
+                                 }
