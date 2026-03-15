@@ -41,6 +41,7 @@ export default function App() {
   const [discordData, setDiscordData] = useState<LanyardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [audioError, setAudioError] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const togglePlay = () => {
@@ -48,7 +49,11 @@ export default function App() {
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        audioRef.current.play().catch(err => console.error("Playback failed:", err));
+        setAudioError(false);
+        audioRef.current.play().catch(err => {
+          console.error("Playback failed:", err);
+          setAudioError(true);
+        });
       }
       setIsPlaying(!isPlaying);
     }
@@ -165,17 +170,27 @@ export default function App() {
               <section>
                 <div className="flex items-center gap-3 mb-4">
                   <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-gray-200">About Me</h2>
-                  <button 
-                    onClick={togglePlay}
-                    className="p-1.5 rounded-full bg-white/5 border border-white/10 text-blue-400 hover:bg-white/10 transition-colors flex items-center justify-center"
-                    title={isPlaying ? "Pause Music" : "Play Music"}
-                  >
-                    {isPlaying ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={togglePlay}
+                      className={`p-1.5 rounded-full bg-white/5 border border-white/10 ${audioError ? 'text-red-400' : 'text-blue-400'} hover:bg-white/10 transition-colors flex items-center justify-center`}
+                      title={isPlaying ? "Pause Music" : "Play Music"}
+                    >
+                      {isPlaying ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
+                    </button>
+                    {audioError && (
+                      <span className="text-[10px] text-red-400/80 font-medium">Music unavailable</span>
+                    )}
+                  </div>
                   <audio 
                     ref={audioRef}
                     src="https://files.catbox.moe/8y9v6n.mp3" 
                     onEnded={() => setIsPlaying(false)}
+                    onError={(e) => {
+                      console.error("Audio playback error:", e);
+                      setIsPlaying(false);
+                      setAudioError(true);
+                    }}
                   />
                 </div>
                 <p className="text-gray-400 leading-relaxed text-sm">
@@ -402,4 +417,4 @@ function SocialCard({ icon, title, description, color, href }: { icon: React.Rea
   }
 
   return content;
-                                 }
+                  }
