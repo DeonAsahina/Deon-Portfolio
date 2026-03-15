@@ -19,7 +19,6 @@ body {
   background-color: var(--color-discord-bg);
   color: var(--color-discord-text-normal);
   font-family: var(--font-sans);
-  margin: 0;
 }
 
 @layer utilities {
