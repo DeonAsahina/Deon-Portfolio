@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   LayoutGrid, 
   User, 
@@ -6,15 +6,9 @@ import {
   Circle,
   Code2,
   Share2,
-  Mail,
-  ChevronRight,
-  MessageSquare,
   Plus,
   Minus,
-  Send,
-  Music,
-  Play,
-  Pause
+  Send
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -34,30 +28,12 @@ interface LanyardData {
 }
 
 // --- Constants ---
-const DISCORD_ID = '737946187830919218'; // ID Discord Anda
+const DISCORD_ID = '737946187830919218'; // ID Anda
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('profile');
   const [discordData, setDiscordData] = useState<LanyardData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [audioError, setAudioError] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        setAudioError(false);
-        audioRef.current.play().catch(err => {
-          console.error("Playback failed:", err);
-          setAudioError(true);
-        });
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
 
   useEffect(() => {
     const fetchDiscordData = async () => {
@@ -170,28 +146,6 @@ export default function App() {
               <section>
                 <div className="flex items-center gap-3 mb-4">
                   <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-gray-200">About Me</h2>
-                  <div className="flex items-center gap-2">
-                    <button 
-                      onClick={togglePlay}
-                      className={`p-1.5 rounded-full bg-white/5 border border-white/10 ${audioError ? 'text-red-400' : 'text-blue-400'} hover:bg-white/10 transition-colors flex items-center justify-center`}
-                      title={isPlaying ? "Pause Music" : "Play Music"}
-                    >
-                      {isPlaying ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
-                    </button>
-                    {audioError && (
-                      <span className="text-[10px] text-red-400/80 font-medium">Music unavailable</span>
-                    )}
-                  </div>
-                  <audio 
-                    ref={audioRef}
-                    src="https://files.catbox.moe/8y9v6n.mp3" 
-                    onEnded={() => setIsPlaying(false)}
-                    onError={(e) => {
-                      console.error("Audio playback error:", e);
-                      setIsPlaying(false);
-                      setAudioError(true);
-                    }}
-                  />
                 </div>
                 <p className="text-gray-400 leading-relaxed text-sm">
                   Hi! I’m <span className="text-white font-semibold">DEON</span>, an enthusiastic animation fan who loves watching Donghua and also enjoys swimming.
@@ -268,6 +222,7 @@ export default function App() {
             transition={{ duration: 0.3 }}
             className="pt-12 px-6 max-w-2xl mx-auto"
           >
+            {/* Header */}
             <div className="flex flex-col items-center mb-12">
               <div className="flex items-center gap-4 mb-4">
                 <Share2 size={32} className="text-blue-500" />
@@ -279,6 +234,7 @@ export default function App() {
               </p>
             </div>
 
+            {/* Social Cards */}
             <div className="space-y-4">
               <SocialCard 
                 icon={
@@ -317,6 +273,7 @@ export default function App() {
               />
             </div>
 
+            {/* Decorative Zoom Buttons */}
             <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-3 opacity-50">
               <button className="p-2 bg-white/10 rounded-full backdrop-blur-md border border-white/10">
                 <Plus size={20} />
@@ -417,4 +374,4 @@ function SocialCard({ icon, title, description, color, href }: { icon: React.Rea
   }
 
   return content;
-                  }
+                        }
