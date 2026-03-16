@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   LayoutGrid, 
   User, 
@@ -6,6 +6,9 @@ import {
   Circle,
   Code2,
   Share2,
+  Mail,
+  ChevronRight,
+  MessageSquare,
   Plus,
   Minus,
   Send
@@ -110,7 +113,7 @@ export default function App() {
                 <div className="flex items-center justify-center gap-2">
                   <h1 className="text-2xl font-bold tracking-tight">DEON</h1>
                   <img 
-                    src="https://cdn.discordapp.com/attachments/1462713721439784960/1482225611182440659/20260314_115506.png?ex=69b62dac&is=69b4dc2c&hm=f63804bb4226117c11d6059f0e0094daaf90a8042a2479f8f25fad3c6d013b76&" 
+                    src="https://i.postimg.cc/npCwFp6T/20260314-115506.png" 
                     alt="Verified" 
                     className="w-5 h-5 object-contain"
                     referrerPolicy="no-referrer"
@@ -124,8 +127,8 @@ export default function App() {
                 {status === 'idle' || status === 'offline' ? (
                   <motion.img
                     src={status === 'idle' 
-                      ? "https://cdn.discordapp.com/attachments/1462713721439784960/1482227451710148679/20260314_120224.png?ex=69b62f62&is=69b4dde2&hm=948257e770c819a421e92437638c5e3d6830351d5eca708d91ac1343b5962b44&"
-                      : "https://cdn.discordapp.com/attachments/1462713721439784960/1482228962129084436/20260314_120817.png?ex=69b630cb&is=69b4df4b&hm=0b844f375143e29fe3fcfde785dfccef3bebc850beedab1a8b0c69f6acfb8c4c&"
+                      ? "https://i.postimg.cc/9W7hryKw/20260314-120224.png"
+                      : "https://i.postimg.cc/sVpNkmbq/20260314-120817.png"
                     }
                     alt={`${status} Status`}
                     className="w-3 h-3 object-contain"
@@ -140,14 +143,14 @@ export default function App() {
               </div>
             </div>
 
-            {/* Main Content */}
-            <div className="px-8 space-y-10 max-w-2xl mx-auto">
-              {/* About Me */}
-              <section>
-                <div className="flex items-center gap-3 mb-4">
-                  <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-gray-200">About Me</h2>
-                </div>
-                <p className="text-gray-400 leading-relaxed text-sm">
+              {/* Main Content */}
+              <div className="px-8 space-y-10 max-w-2xl mx-auto">
+                {/* About Me */}
+                <section>
+                  <div className="flex items-center gap-3 mb-4">
+                    <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-gray-200">About Me</h2>
+                  </div>
+                  <p className="text-gray-400 leading-relaxed text-sm">
                   Hi! I’m <span className="text-white font-semibold">DEON</span>, an enthusiastic animation fan who loves watching Donghua and also enjoys swimming.
                 </p>
               </section>
@@ -192,11 +195,13 @@ export default function App() {
                   </div>
                   <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">
                     <div className="relative w-9 h-9 flex-shrink-0">
+                      {/* CSS Fallback (Kotak biru dengan huruf P) */}
                       <div className="absolute inset-0 bg-[#24a1f3] rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">
                         P
                       </div>
+                      {/* Actual Image (Akan menutupi fallback jika berhasil dimuat) */}
                       <img 
-                        src="https://cdn.discordapp.com/attachments/1462713721439784960/1482201854141137058/1773454800560.png?ex=69b6178c&is=69b4c60c&hm=4ee7876258dcf77042e1c1e8e10007b57d4934e31536e53705d25c82a90968b6&" 
+                        src="https://i.postimg.cc/xQg2qj40/20260316-081249.png" 
                         alt="PixelLab" 
                         className="absolute inset-0 w-full h-full object-contain rounded-lg z-10"
                         referrerPolicy="no-referrer"
@@ -239,7 +244,7 @@ export default function App() {
               <SocialCard 
                 icon={
                   <img 
-                    src="https://cdn.discordapp.com/attachments/1462713721439784960/1482208970449096704/Discord_Logo_Vector_Art_Icons_and_Graphics_for_Free_Download.jpg?ex=69b61e2c&is=69b4ccac&hm=9fe613f7fd06274261d8a08cb39138553dcc11b35b6f252461aa6139b6f127ee&" 
+                    src="https://i.postimg.cc/9XjTvt5Y/20260316-082027.png" 
                     alt="Discord" 
                     className="w-full h-full object-cover rounded-2xl"
                     referrerPolicy="no-referrer"
@@ -253,7 +258,7 @@ export default function App() {
               <SocialCard 
                 icon={
                   <img 
-                    src="https://cdn.discordapp.com/attachments/1462713721439784960/1482208970449096704/Discord_Logo_Vector_Art_Icons_and_Graphics_for_Free_Download.jpg?ex=69b61e2c&is=69b4ccac&hm=9fe613f7fd06274261d8a08cb39138553dcc11b35b6f252461aa6139b6f127ee&" 
+                    src="https://i.postimg.cc/9XjTvt5Y/20260316-082027.png" 
                     alt="Discord Server" 
                     className="w-full h-full object-cover rounded-2xl"
                     referrerPolicy="no-referrer"
@@ -265,15 +270,22 @@ export default function App() {
                 href="https://discord.gg/hvwZCXWEnh"
               />
               <SocialCard 
-                icon={<Send size={24} />} 
+                icon={
+                  <img 
+                    src="https://i.postimg.cc/yBqFgBgh/20260316-082003.png" 
+                    alt="Telegram" 
+                    className="w-full h-full object-cover rounded-2xl"
+                    referrerPolicy="no-referrer"
+                  />
+                } 
                 title="@deonats" 
                 description="Message me on Telegram"
-                color="bg-[#0088cc]"
+                color="bg-transparent"
                 href="https://t.me/deonats"
               />
             </div>
 
-            {/* Decorative Zoom Buttons */}
+            {/* Decorative Zoom Buttons (from image) */}
             <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-3 opacity-50">
               <button className="p-2 bg-white/10 rounded-full backdrop-blur-md border border-white/10">
                 <Plus size={20} />
@@ -374,4 +386,4 @@ function SocialCard({ icon, title, description, color, href }: { icon: React.Rea
   }
 
   return content;
-                        }
+    }
