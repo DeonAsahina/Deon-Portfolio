@@ -113,7 +113,7 @@ export default function App() {
                 <div className="flex items-center justify-center gap-2">
                   <h1 className="text-2xl font-bold tracking-tight">DEON</h1>
                   <img 
-                    src="https://i.postimg.cc/npCwFp6T/20260314-115506.png" 
+                    src="https://i.postimg.cc/XpxF7PCV/20260314_115506.png" 
                     alt="Verified" 
                     className="w-5 h-5 object-contain"
                     referrerPolicy="no-referrer"
@@ -127,7 +127,7 @@ export default function App() {
                 {status === 'idle' || status === 'offline' ? (
                   <motion.img
                     src={status === 'idle' 
-                      ? "https://i.postimg.cc/rdZQ0m0H/20260314-120224.png"
+                      ? "https://i.postimg.cc/rdZQ0m0H/20260314_120224.png"
                       : "https://i.postimg.cc/sVpNkmbq/20260314-120817.png"
                     }
                     alt={`${status} Status`}
@@ -201,7 +201,7 @@ export default function App() {
                       </div>
                       {/* Actual Image (Akan menutupi fallback jika berhasil dimuat) */}
                       <img 
-                        src="https://i.postimg.cc/xQg2qj40/20260316-081249.png" 
+                        src="https://i.postimg.cc/PNj2CBPz/20260316_081249.png" 
                         alt="PixelLab" 
                         className="absolute inset-0 w-full h-full object-contain rounded-lg z-10"
                         referrerPolicy="no-referrer"
@@ -244,7 +244,7 @@ export default function App() {
               <SocialCard 
                 icon={
                   <img 
-                    src="https://i.postimg.cc/9XjTvt5Y/20260316-082027.png" 
+                    src="https://i.postimg.cc/Mff62vVw/20260316_082027.png" 
                     alt="Discord" 
                     className="w-full h-full object-cover rounded-2xl"
                     referrerPolicy="no-referrer"
@@ -258,7 +258,7 @@ export default function App() {
               <SocialCard 
                 icon={
                   <img 
-                    src="https://i.postimg.cc/9XjTvt5Y/20260316-082027.png" 
+                    src="https://i.postimg.cc/Mff62vVw/20260316_082027.png" 
                     alt="Discord Server" 
                     className="w-full h-full object-cover rounded-2xl"
                     referrerPolicy="no-referrer"
@@ -272,7 +272,7 @@ export default function App() {
               <SocialCard 
                 icon={
                   <img 
-                    src="https://i.postimg.cc/yBqFgBgh/20260316-082003.png" 
+                    src="https://i.postimg.cc/fkVT0gph/20260316_082003.png" 
                     alt="Telegram" 
                     className="w-full h-full object-cover rounded-2xl"
                     referrerPolicy="no-referrer"
