@@ -127,7 +127,7 @@ export default function App() {
                 {status === 'idle' || status === 'offline' ? (
                   <motion.img
                     src={status === 'idle' 
-                      ? "https://i.postimg.cc/9W7hryKw/20260314-120224.png"
+                      ? "https://i.postimg.cc/rdZQ0m0H/20260314-120224.png"
                       : "https://i.postimg.cc/sVpNkmbq/20260314-120817.png"
                     }
                     alt={`${status} Status`}
