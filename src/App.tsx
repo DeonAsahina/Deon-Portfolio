@@ -113,7 +113,7 @@ export default function App() {
                 <div className="flex items-center justify-center gap-2">
                   <h1 className="text-2xl font-bold tracking-tight">DEON</h1>
                   <img 
-                    src="https://raw.githubusercontent.com/DeonAsahina/Deon-Portfolio/main/20260314_115506.png" 
+                    src="https://raw.githubusercontent.com/DeonAsahina/Deon-Portfolio/main/20260326_090120.png" 
                     alt="Verified" 
                     className="w-5 h-5 object-contain"
                     referrerPolicy="no-referrer"
@@ -386,4 +386,4 @@ function SocialCard({ icon, title, description, color, href }: { icon: React.Rea
   }
 
   return content;
-                      }
+}
