@@ -127,7 +127,7 @@ export default function App() {
                 {status === 'idle' || status === 'offline' ? (
                   <motion.img
                     src={status === 'idle' 
-                      ? "https://i.postimg.cc/YhvZdVVp/20260314_120224.png"
+                      ? "https://i.ibb.co/wZbP58FS/20260314-120224.png"
                       : "https://i.postimg.cc/sVpNkmbq/20260314_120817.png"
                     }
                     alt={`${status} Status`}
@@ -386,4 +386,4 @@ function SocialCard({ icon, title, description, color, href }: { icon: React.Rea
   }
 
   return content;
-      }
+                  }
