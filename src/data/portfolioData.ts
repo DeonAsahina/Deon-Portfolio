@@ -1,108 +1,111 @@
-import { ProfileData, Project, SkillCategory } from '../types';
+ import profileImg from '../assets/images/profile_developer_1784799763426.jpg';
+import ecommerceImg from '../assets/images/project_ecommerce_1784799779681.jpg';
+import dashboardImg from '../assets/images/project_dashboard_1784799803479.jpg';
+import taskappImg from '../assets/images/project_taskapp_1784799858308.jpg';
+
+import { ProfileData, SkillItem, ProjectItem, ExperienceItem, EducationItem } from '../types';
 
 export const initialProfileData: ProfileData = {
   name: 'Deon',
-  title: 'BDFD Bot Developer & PixelLab Graphic Designer',
-  bio: 'Spesialis dalam pembuatan bot Discord interaktif berbasis BDFD (Bot Designer for Discord) dan desain grafis kreatif seluler menggunakan PixelLab.',
-  avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600',
-  email: 'deon2669@gmail.com',
+  title: 'Discord Bot Developer & Graphic Designer',
+  tagline: 'I build custom Discord bots using Bot Designer for Discord (BDFD) and create graphics with PixelLab.',
+  aboutText: "I'm Deon, a passionate Discord Bot Developer and Graphic Designer. I build custom Discord bots with Bot Designer for Discord (BDFScript) and create clean, eye-catching graphics, including posters, banners, and typography using PixelLab.\n\nOutside of development and design, I enjoy swimming, riding motorcycles, watching anime, donghua, dramas, and movies, as well as exploring new ideas and learning new things.",
+  avatarUrl: profileImg,
+  email: 'deon.dev@example.com',
   location: 'Indonesia',
-  phone: '+62 858 2334 2058',
-  telegram: '@deonats',
-  discord: 'deonhere.',
+  phone: '+62 812 3456 7890',
+  telegram: '@deon_dev',
+  discord: 'deon_dev',
   availability: 'Available for BDFD Bot & PixelLab Design Commissions',
   socials: {
     github: 'https://github.com',
+    linkedin: 'https://linkedin.com',
     instagram: 'https://instagram.com',
     email: 'mailto:deon.dev@example.com',
   },
-  aboutText: [
-    'Halo! Saya Deon, seorang kreator digital yang berfokus pada pengembangan Bot Discord dengan BDFD serta Desain Grafis Ponsel menggunakan PixelLab.',
-    'Saya berdedikasi menciptakan pengalaman Discord Server yang otomatis, responsif, dan kaya fitur, serta menyajikan elemen visual seperti poster, logo, banner, dan pampflet yang estetik.',
-    'Setiap proyek dikerjakan dengan ketelitian tinggi untuk memastikan kepuasan klien dan performa server/visual yang optimal.'
+  highlights: [
+    {
+      icon: 'code',
+      title: 'Bot Designer for Discord (BDFD)',
+      description: 'Building moderation, economy, leveling, ticket, giveaway, and utility commands with BDScript.',
+    },
+    {
+      icon: 'user',
+      title: 'PixelLab Graphic Design',
+      description: 'Crafting creative posters, banners, logos, and typography art with PixelLab.',
+    },
   ],
-  stats: [
-    { label: 'Proyek Selesai', value: '45+' },
-    { label: 'Bot Discord BDFD', value: '25+' },
-    { label: 'Desain PixelLab', value: '50+' },
-    { label: 'Klien Puas', value: '30+' }
-  ]
 };
 
-export const sampleProjects: Project[] = [
+export const initialSkills: SkillItem[] = [
+  { id: '1', name: 'Bot Designer for Discord (BDFD)', category: 'bdfd', level: 92, description: 'BDScript & BDScript 2 syntax' },
+  { id: '2', name: 'Discord Bot Architecture', category: 'bdfd', level: 88, description: 'Command structure, callbacks, variables' },
+  { id: '3', name: 'Bot Moderation & Utility System', category: 'bdfd', level: 90, description: 'Auto-mod, tickets, verification, logging' },
+  { id: '4', name: 'Economy & Leveling Systems', category: 'bdfd', level: 85, description: 'Custom variables, shop commands, rank cards' },
+  { id: '5', name: 'PixelLab Graphic Design', category: 'design', level: 90, description: 'Mobile graphic design & layouting' },
+  { id: '6', name: 'Typography & Text Effects', category: 'design', level: 88, description: 'Custom fonts, 3D text, gradients, shadows' },
+  { id: '7', name: 'Poster & Banner Design', category: 'design', level: 86, description: 'Social media banners, esports graphics, thumbnails' },
+  { id: '8', name: 'Photo Editing & Manipulation', category: 'design', level: 82, description: 'Background removal, color grading, lighting' },
+  { id: '9', name: 'Discord API & Webhooks', category: 'tools', level: 80, description: 'Embed structures & webhook notifications' },
+  { id: '10', name: 'Canva / Mobile Editing Tools', category: 'tools', level: 85, description: 'Complementary design assets' },
+];
+
+export const initialProjects: ProjectItem[] = [
   {
     id: '1',
-    title: 'Aegis Security & Economy Bot',
+    title: 'Advanced Discord Economy & Ticket Bot (BDFD)',
     category: 'bdfd',
-    categoryLabel: 'Bot Designer for Discord',
-    shortDescription: 'Bot Discord serbaguna dengan sistem ekonomi server, moderasi otomatis, dan tiket bantuan.',
-    fullDescription: 'Aegis adalah bot kustom yang dirancang dengan ribuan baris perintah BDFD. Bot ini mengelola otomatisasi server seperti antispam, log aktivitas, sistem koin/ekonomi interaktif, hingga pendaftaran tiket layanan.',
-    imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800',
-    tags: ['BDFD', 'Discord API', 'Bot Moderasi', 'Sistem Ekonomi'],
-    features: ['120+ Perintah Custom', 'Sistem Tiket Support Auto-close', 'Moderasi Kustom & Auto Role', 'Sistem Leveling & Rank Card'],
-    commandsCount: 120,
-    date: '2024'
+    description: 'A feature-rich BDFD Discord bot with full economy system, shop items, gambling games, and interactive ticket support.',
+    longDescription: 'Built entirely using Bot Designer for Discord (BDScript). Features include custom user variables, daily reward timers, shop purchasing systems, auto moderation, and modal ticket support for Discord communities.',
+    imageUrl: taskappImg,
+    tags: ['BDFD', 'BDScript', 'Discord Bot', 'Economy System', 'Ticket Bot'],
+    featured: true,
   },
   {
     id: '2',
-    title: 'Cyberpunk Game Tournament Poster',
+    title: 'Esports Gaming Banner & Logo (PixelLab)',
     category: 'pixellab',
-    categoryLabel: 'PixelLab Design',
-    shortDescription: 'Poster turnamen e-sports bergaya Cyberpunk futuristik yang dirancang penuh di PixelLab.',
-    fullDescription: 'Poster promosi skala HD dengan teknik manipulasi pencahayaan, gradasi warna neon kustom, serta susunan tipografi tegas yang mengikat perhatian penonton turnamen e-sports.',
-    imageUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800',
-    tags: ['PixelLab', 'Mobile Design', 'E-Sports Poster', 'Cyberpunk'],
-    features: ['Resolusi Tinggi Ultra-HD 4K', 'Manipulasi Cahaya Neon Kustom', 'Aset Vektor Hand-crafted', 'Font Typography Modern'],
-    canvasSize: '2160 x 3840 px',
-    date: '2024'
+    description: 'High-contrast mobile banner & typography design created entirely on PixelLab for an esports team.',
+    longDescription: 'Designed using custom 3D typography, lighting highlights, character masking, and gradient overlays inside PixelLab. Optimized for YouTube and Discord banner dimensions.',
+    imageUrl: ecommerceImg,
+    tags: ['PixelLab', 'Graphic Design', 'Esports Banner', 'Mobile Art'],
+    featured: true,
   },
   {
     id: '3',
-    title: 'Vortex Music & RPG Discord Bot',
+    title: 'Community Moderation & Leveling Bot (BDFD)',
     category: 'bdfd',
-    categoryLabel: 'Bot Designer for Discord',
-    shortDescription: 'Bot Discord permainan RPG teks dan sistem quest komunitas interaktif.',
-    fullDescription: 'Dirancang menggunakan logika variabel BDFD tingkat lanjut, memungkinkan pengguna bertualang dalam cerita RPG interaktif, mengumpulkan item, dan bertarung antar sesama anggota server.',
-    imageUrl: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&q=80&w=800',
-    tags: ['BDFD', 'Text RPG', 'Discord Bot', 'Variable Engine'],
-    features: ['Sistem Inventori Item', 'Sistem Pertarungan Turn-based', 'Save Progress via Global Vars', 'Dynamic Embed Messages'],
-    commandsCount: 85,
-    date: '2024'
+    description: 'Automated moderation bot with level-up rank cards, warn system, and anti-spam filters built in BDFD.',
+    longDescription: 'Features automated role assignment on leveling, customizable prefix/slash commands, detailed log embeds, and kick/ban/mute administrative tools.',
+    imageUrl: dashboardImg,
+    tags: ['BDFD', 'Moderation Bot', 'Discord API', 'Leveling System'],
+    featured: true,
   },
-  {
-    id: '4',
-    title: 'Minimalist Esports Team Logo & Branding',
-    category: 'pixellab',
-    categoryLabel: 'PixelLab Design',
-    shortDescription: 'Identitas maskot logo dan kit media sosial untuk tim gaming profesional.',
-    fullDescription: 'Logo maskot yang tajam dengan kombinasi warna gradien elegan, disertai jersey mockup dan pampflet media sosial.',
-    imageUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&q=80&w=800',
-    tags: ['PixelLab', 'Vector Mascot', 'Branding', 'Social Media Kit'],
-    features: ['Desain Vektor Segi Banyak', 'Kit Media Sosial Lengkap', 'Mockup Jersey & Banner', 'Format PNG Transparan HD'],
-    canvasSize: '3000 x 3000 px',
-    date: '2024'
-  }
 ];
 
-export const skillCategories: SkillCategory[] = [
+export const initialExperiences: ExperienceItem[] = [
   {
-    title: 'Bot Designer for Discord (BDFD)',
-    description: 'Pengembangan logika bot, variabel server, embed kustom, dan otomasi komunitas.',
-    skills: [
-      { name: 'BDFD Logic Scripting', level: 'Expert', description: 'Penguasaan logika fungsi $if, $checkCondition, $onlyIf, dan matematika $calculate.', icon: 'Code' },
-      { name: 'Variables & Storage', level: 'Advanced', description: 'Pengelolaan $setUserVar, $setServerVar, dan $getVar untuk sistem data persisten.', icon: 'Database' },
-      { name: 'Custom Embeds & Components', level: 'Expert', description: 'Desain pesan embed elegan, tombol interaktif, select menu, dan modal input.', icon: 'Layout' },
-      { name: 'Moderation & Automation', level: 'Expert', description: 'Sistem auto-moderasi, filter kata, welcome card, dan logging aktivitas server.', icon: 'Shield' },
-    ]
+    id: '1',
+    role: 'Freelance Discord Bot Developer',
+    company: 'Self-Employed / Commissions',
+    period: '2022 - Present',
+    description: 'Developed over 50+ custom Discord bots using BDFD (Bot Designer for Discord) for various gaming and community servers.',
   },
   {
-    title: 'PixelLab Mobile Graphic Design',
-    description: 'Pembuatan karya visual definisi tinggi dari perangkat seluler dengan kontrol tipografi dan layer presisi.',
-    skills: [
-      { name: 'Typography & Layout', level: 'Expert', description: 'Penataan tata letak visual, kombinasi font kustom, dan efek teks 3D/Shadow.', icon: 'Type' },
-      { name: 'Color Grading & Effects', level: 'Advanced', description: 'Manipulasi pencahayaan, overlay tekstur, vignetting, dan penyelarasan warna.', icon: 'Palette' },
-      { name: 'Vector & Mascot Editing', level: 'Advanced', description: 'Pemotongan presisi, pembuatan shape kustom, dan perakitan elemen vektor.', icon: 'PenTool' },
-      { name: 'Poster & Banner Composition', level: 'Expert', description: 'Komposisi poster e-sports, flyer acara, dan jersey mockup siap cetak.', icon: 'Image' },
-    ]
-  }
+    id: '2',
+    role: 'Mobile Graphic Designer',
+    company: 'PixelLab Commissions',
+    period: '2022 - Present',
+    description: 'Created custom banners, avatars, posters, and esports logos using PixelLab for online clients and server owners.',
+  },
+];
+
+export const initialEducations: EducationItem[] = [
+  {
+    id: '1',
+    degree: 'Autodidact Discord Bot Developer & Graphic Designer',
+    institution: 'Self-Taught & Community Projects',
+    period: '2021 - Present',
+    description: 'Focused on BDScript syntax mastering, Discord bot logic, and mobile digital graphic art composition.',
+  },
 ];
