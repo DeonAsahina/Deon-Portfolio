@@ -16,7 +16,7 @@ export const initialProfileData: ProfileData = {
   socials: {
     github: 'https://github.com',
     linkedin: 'https://linkedin.com',
-    instagram: 'https://instagram.com',
+    instagram: 'https://instagram.com/deon.cromwell',
     email: 'mailto:deon.dev@example.com',
   },
   highlights: [
