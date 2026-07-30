@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { initialProfileData, sampleProjects } from './data/portfolioData';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutSection } from './components/AboutSection';
@@ -10,79 +9,104 @@ import { Footer } from './components/Footer';
 import { EditProfileModal } from './components/EditProfileModal';
 import { CVModal } from './components/CVModal';
 import { ProjectDetailModal } from './components/ProjectDetailModal';
-import { Project } from './types';
+
+import {
+  initialProfileData,
+  initialSkills,
+  initialProjects,
+  initialExperiences,
+  initialEducations,
+} from './data/portfolioData';
+
+import { ProfileData, SkillItem, ProjectItem } from './types';
 
 export function App() {
-  const [profile, setProfile] = useState(initialProfileData);
-  const [projects] = useState(sampleProjects);
+  const [profile, setProfile] = useState<ProfileData>(() => {
+    const saved = localStorage.getItem('deon_portfolio_profile');
+    return saved ? JSON.parse(saved) : initialProfileData;
+  });
 
-  // Modals
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isCVModalOpen, setIsCVModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [skills, setSkills] = useState<SkillItem[]>(() => {
+    const saved = localStorage.getItem('deon_portfolio_skills');
+    return saved ? JSON.parse(saved) : initialSkills;
+  });
+
+  const [projects, setProjects] = useState<ProjectItem[]>(() => {
+    const saved = localStorage.getItem('deon_portfolio_projects');
+    return saved ? JSON.parse(saved) : initialProjects;
+  });
+
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isCVOpen, setIsCVOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem('deon_portfolio_profile', JSON.stringify(profile));
+  }, [profile]);
+
+  useEffect(() => {
+    localStorage.setItem('deon_portfolio_skills', JSON.stringify(skills));
+  }, [skills]);
+
+  useEffect(() => {
+    localStorage.setItem('deon_portfolio_projects', JSON.stringify(projects));
+  }, [projects]);
+
+  const handleSaveProfile = (updatedProfile: ProfileData) => {
+    setProfile(updatedProfile);
+  };
+
+  const handleResetData = () => {
+    if (window.confirm('Apakah kamu yakin ingin mengembalikan semua data profil & portofolio ke awal?')) {
+      localStorage.removeItem('deon_portfolio_profile');
+      localStorage.removeItem('deon_portfolio_skills');
+      localStorage.removeItem('deon_portfolio_projects');
+      setProfile(initialProfileData);
+      setSkills(initialSkills);
+      setProjects(initialProjects);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans antialiased selection:bg-blue-100 selection:text-blue-700">
-      {/* Navigation */}
       <Navbar
         profile={profile}
-        onOpenEditModal={() => setIsEditModalOpen(true)}
-        onOpenCVModal={() => setIsCVModalOpen(true)}
+        onOpenCV={() => setIsCVOpen(true)}
+        onOpenEditProfile={() => setIsEditProfileOpen(true)}
+        onResetData={handleResetData}
       />
 
-      {/* Main Content */}
       <main>
-        {/* Hero Section */}
-        <Hero
-          profile={profile}
-          onOpenCV={() => setIsCVModalOpen(true)}
-          onOpenEditProfile={() => setIsEditModalOpen(true)}
-        />
-
-        {/* About Section */}
+        <Hero profile={profile} onOpenEditProfile={() => setIsEditProfileOpen(true)} />
         <AboutSection profile={profile} />
-
-        {/* Skills Section */}
-        <SkillsSection />
-
-        {/* Projects Section */}
-        <ProjectsSection
-          projects={projects}
-          onSelectProject={(proj) => setSelectedProject(proj)}
-        />
-
-        {/* Contact Section */}
+        <SkillsSection skills={skills} />
+        <ProjectsSection projects={projects} onSelectProject={setSelectedProject} />
         <ContactSection profile={profile} />
       </main>
 
-      {/* Footer */}
       <Footer profile={profile} />
 
       {/* Modals */}
-      {isEditModalOpen && (
-        <EditProfileModal
-          profile={profile}
-          onSave={(updated) => {
-            setProfile(updated);
-            setIsEditModalOpen(false);
-          }}
-          onClose={() => setIsEditModalOpen(false)}
-        />
-      )}
+      <EditProfileModal
+        isOpen={isEditProfileOpen}
+        onClose={() => setIsEditProfileOpen(false)}
+        profile={profile}
+        onSave={handleSaveProfile}
+      />
 
-      {isCVModalOpen && (
-        <CVModal
-          profile={profile}
-          onClose={() => setIsCVModalOpen(false)}
-        />
-      )}
+      <CVModal
+        isOpen={isCVOpen}
+        onClose={() => setIsCVOpen(false)}
+        profile={profile}
+        skills={skills}
+        experiences={initialExperiences}
+        educations={initialEducations}
+      />
 
-      {selectedProject && (
-        <ProjectDetailModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      )}
+      <ProjectDetailModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </div>
   );
 }
