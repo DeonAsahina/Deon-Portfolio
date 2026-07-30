@@ -1,125 +1,178 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, FileText } from 'lucide-react';
+import { Menu, X, FileText, Edit3, RotateCcw } from 'lucide-react';
 import { ProfileData } from '../types';
 
 interface NavbarProps {
   profile: ProfileData;
-  onOpenEditModal: () => void;
-  onOpenCVModal: () => void;
+  onOpenCV: () => void;
+  onOpenEditProfile: () => void;
+  onResetData?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  onOpenCVModal,
+  profile,
+  onOpenCV,
+  onOpenEditProfile,
+  onResetData,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const navLinks = [
-    { id: 'hero', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'contact', label: 'Contact' },
-  ];
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    setMobileMenuOpen(false);
-    if (id === 'hero') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const elem = document.getElementById(id);
-    if (elem) {
-      elem.scrollIntoView({ behavior: 'smooth' });
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Contact', href: '#contact' },
+  ];
+
+  const scrollTo = (href: string) => {
+    setIsMobileMenuOpen(false);
+    const id = href.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm py-3'
+          ? 'bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 py-3.5'
           : 'bg-transparent py-5'
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 sm:px-8 flex items-center justify-between">
+        
         {/* Brand Logo */}
-        <button
-          onClick={() => scrollToSection('hero')}
-          className="text-xl font-black tracking-tight flex items-center gap-1 group text-left focus:outline-none"
+        <a
+          href="#home"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollTo('#home');
+          }}
+          className="text-xl font-extrabold text-gray-900 tracking-tight flex items-center gap-1.5"
         >
-          <span className="text-gray-900 group-hover:text-blue-600 transition-colors">
-            D
-          </span>
-          <span className="text-blue-600 font-extrabold text-2xl leading-none">.</span>
-        </button>
+          <span className="text-2xl text-blue-600 font-black">D</span>
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-600 mb-1" />
+        </a>
 
-        {/* Desktop Nav Items */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-8">
           {navLinks.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => scrollToSection(link.id)}
-              className="text-sm font-semibold text-gray-600 hover:text-blue-600 transition-colors focus:outline-none"
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo(link.href);
+              }}
+              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
             >
-              {link.label}
-            </button>
+              {link.name}
+            </a>
           ))}
         </nav>
 
-        {/* Right Action Tools */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Desktop Action Buttons */}
+        <div className="hidden md:flex items-center space-x-3">
           <button
-            onClick={onOpenCVModal}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors border border-blue-200/60"
+            onClick={onOpenCV}
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors"
           >
             <FileText className="w-3.5 h-3.5" />
             <span>Lihat CV</span>
           </button>
-        </div>
 
-        {/* Mobile menu toggle */}
-        <div className="flex md:hidden items-center gap-2">
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-gray-700 hover:text-gray-900 rounded-lg focus:outline-none"
-            aria-label="Toggle menu"
+            onClick={onOpenEditProfile}
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors border border-blue-100"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <Edit3 className="w-3.5 h-3.5" />
+            <span>Edit Profil</span>
           </button>
         </div>
+
+        {/* Mobile Menu Button */}
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-gray-700 hover:text-blue-600 rounded-xl focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
       </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-gray-100 px-6 py-4 space-y-3 shadow-lg animate-in slide-in-from-top duration-200">
-          {navLinks.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => scrollToSection(link.id)}
-              className="block w-full text-left py-2 text-sm font-semibold text-gray-700 hover:text-blue-600"
-            >
-              {link.label}
-            </button>
-          ))}
-          <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2">
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-white border-b border-gray-100 px-6 pt-4 pb-6 shadow-lg space-y-4">
+          <div className="flex flex-col space-y-3">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo(link.href);
+                }}
+                className="text-base font-medium text-gray-700 hover:text-blue-600 py-1"
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
+
+          <div className="pt-4 border-t border-gray-100 flex flex-col gap-2.5">
             <button
               onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenCVModal();
+                setIsMobileMenuOpen(false);
+                onOpenCV();
               }}
-              className="flex-1 py-2 text-xs font-semibold text-blue-600 bg-blue-50 rounded-lg text-center"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl"
             >
-              Lihat CV
+              <FileText className="w-4 h-4" />
+              <span>Lihat CV</span>
             </button>
+
+            <button
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                onOpenEditProfile();
+              }}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl border border-blue-100"
+            >
+              <Edit3 className="w-4 h-4" />
+              <span>Edit Profil</span>
+            </button>
+
+            {onResetData && (
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  onResetData();
+                }}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl border border-red-100"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Reset Data</span>
+              </button>
+            )}
           </div>
         </div>
       )}
