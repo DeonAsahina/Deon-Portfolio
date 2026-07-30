@@ -8,18 +8,17 @@ export interface ProfileData {
   email: string;
   location: string;
   phone: string;
-  whatsapp?: string;
   telegram?: string;
   discord?: string;
-  availability: string;
+  availability?: string;
   socials: {
-    github: string;
-    linkedin: string;
-    instagram: string;
-    email: string;
+    github?: string;
+    linkedin?: string;
+    instagram?: string;
+    email?: string;
   };
   highlights: {
-    icon: 'rocket' | 'code' | 'user';
+    icon: string;
     title: string;
     description: string;
   }[];
@@ -27,22 +26,21 @@ export interface ProfileData {
 
 export interface SkillItem {
   name: string;
-  level: number; // 0-100
-  category: 'Frontend' | 'Backend' | 'Tools & Design';
-  iconName?: string;
+  level: number;
+  category: string;
 }
 
 export interface ProjectItem {
   id: string;
   title: string;
-  category: 'Discord Bot' | 'Graphic Design' | string;
+  category: string;
   description: string;
-  longDescription: string;
+  longDescription?: string;
   image: string;
   tags: string[];
-  liveUrl: string;
-  githubUrl: string;
-  featured: boolean;
+  liveUrl?: string;
+  githubUrl?: string;
+  featured?: boolean;
 }
 
 export interface ExperienceItem {
