@@ -20,28 +20,26 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ profile }) => {
     ? telegramHandle
     : `https://t.me/${telegramHandle}`;
 
-  const discordTag = profile.discord || 'deon_dev';
-
   const contactList = [
     {
       id: 'email',
       name: 'Email Address',
       value: profile.email || 'deon.dev@example.com',
-      subtitle: 'Official Inquiries & Projects',
+      subtitle: 'Kirim Pesan / Inquiries',
       color: 'bg-blue-50 border-blue-100 text-blue-600',
       badgeColor: 'bg-blue-600 text-white hover:bg-blue-700',
       icon: Mail,
-      link: `mailto:${profile.email}`,
+      link: `mailto:${profile.email || 'deon.dev@example.com'}`,
       actionLabel: 'Kirim Email',
-      isExternal: false,
+      isExternal: true,
     },
     {
       id: 'telegram',
       name: 'Telegram',
       value: profile.telegram || '@deon_dev',
-      subtitle: 'Direct Messaging & Updates',
+      subtitle: 'Direct Message & Fast Chat',
       color: 'bg-sky-50 border-sky-100 text-sky-600',
-      badgeColor: 'bg-sky-600 text-white hover:bg-sky-700',
+      badgeColor: 'bg-sky-500 text-white hover:bg-sky-600',
       icon: Send,
       link: telegramUrl,
       actionLabel: 'Chat di Telegram',
@@ -49,33 +47,32 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ profile }) => {
     },
     {
       id: 'discord',
-      name: 'Discord',
-      value: discordTag,
-      subtitle: 'BDFD Bot & Graphic Support',
+      name: 'Discord Username',
+      value: profile.discord || 'deon_dev',
+      subtitle: 'Add Username & Direct Message',
       color: 'bg-indigo-50 border-indigo-100 text-indigo-600',
       badgeColor: 'bg-indigo-600 text-white hover:bg-indigo-700',
       icon: MessageSquare,
-      link: '#',
-      actionLabel: 'Copy Username',
+      link: null,
+      actionLabel: 'Salin Username',
       isExternal: false,
-      isDiscord: true,
     },
   ];
 
   return (
-    <section id="contact" className="py-20 bg-slate-50/70 border-t border-gray-100">
+    <section id="contact" className="py-20 bg-gray-50 border-t border-gray-100">
       <div className="max-w-6xl mx-auto px-6 sm:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-          <span className="text-blue-600 font-bold text-xs sm:text-sm tracking-widest uppercase">
-            GET IN TOUCH
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">
+            Get In Touch
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
-            Contact Me
+            Hubungi Saya
           </h2>
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            Ingin membuat bot Discord kustom (BDFD) atau pesanan desain grafis PixelLab? Hubungi saya secara langsung melalui salah satu platform di bawah ini.
+          <p className="text-gray-600 text-base sm:text-lg">
+            Tertarik membuat bot Discord (BDFD) custom atau butuh desain grafis PixelLab? Silakan hubungi saya melalui kontak di bawah ini.
           </p>
         </div>
 
@@ -88,65 +85,60 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ profile }) => {
             return (
               <div
                 key={c.id}
-                className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between space-y-5"
+                className="bg-white rounded-2xl p-6 border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3.5">
-                    <div className={`p-3 rounded-xl border ${c.color} shrink-0`}>
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center border ${c.color}`}>
                       <IconComp className="w-6 h-6" />
                     </div>
-                    <div>
-                      <h3 className="text-base font-bold text-gray-900">{c.name}</h3>
-                      <p className="text-xs text-gray-500">{c.subtitle}</p>
-                    </div>
-                  </div>
 
-                  <button
-                    onClick={() => handleCopy(c.value, c.id)}
-                    className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shrink-0 flex items-center gap-1 text-xs font-medium"
-                    title={`Salin ${c.name}`}
-                  >
-                    {isCopied ? (
-                      <>
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                        <span className="text-emerald-600 font-semibold text-[11px]">Tersalin!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-4 h-4" />
-                        <span className="hidden sm:inline text-[11px]">Copy</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                {/* Display Value */}
-                <div className="bg-slate-50 p-3 rounded-xl border border-gray-100 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-gray-800 tracking-wide font-mono truncate">
-                    {c.value}
-                  </span>
-                </div>
-
-                {/* Action Buttons */}
-                <div>
-                  {c.isDiscord ? (
                     <button
                       onClick={() => handleCopy(c.value, c.id)}
-                      className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 shadow-sm ${c.badgeColor}`}
+                      className="text-xs font-medium text-gray-500 hover:text-gray-800 bg-gray-50 hover:bg-gray-100 px-2.5 py-1.5 rounded-lg border border-gray-200 transition-colors flex items-center gap-1"
+                      title="Salin Kontak"
                     >
-                      {isCopied ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                      <span>{isCopied ? 'Username Tersalin!' : 'Copy Discord Username'}</span>
+                      {isCopied ? (
+                        <>
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          <span className="text-emerald-600 font-semibold">Tersalin</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Salin</span>
+                        </>
+                      )}
                     </button>
-                  ) : (
+                  </div>
+
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">{c.name}</h3>
+                  <p className="text-xs text-gray-500 mb-3 font-medium">{c.subtitle}</p>
+                  
+                  <div className="bg-gray-50 rounded-xl px-3.5 py-2.5 border border-gray-100 font-mono text-sm text-gray-800 break-all select-all font-semibold">
+                    {c.value}
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-gray-100">
+                  {c.link ? (
                     <a
                       href={c.link}
                       target={c.isExternal ? '_blank' : '_self'}
                       rel={c.isExternal ? 'noopener noreferrer' : ''}
-                      className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 shadow-sm ${c.badgeColor}`}
+                      className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 shadow-sm ${c.badgeColor}`}
                     >
                       <span>{c.actionLabel}</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
+                      <ExternalLink className="w-4 h-4" />
                     </a>
+                  ) : (
+                    <button
+                      onClick={() => handleCopy(c.value, c.id)}
+                      className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 shadow-sm ${c.badgeColor}`}
+                    >
+                      <span>{isCopied ? 'Tersalin ke Clipboard!' : c.actionLabel}</span>
+                      <Copy className="w-4 h-4" />
+                    </button>
                   )}
                 </div>
               </div>
@@ -154,12 +146,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ profile }) => {
           })}
         </div>
 
-        {/* Status Badge */}
-        <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold shadow-sm">
+        {/* Availability Banner */}
+        <div className="mt-12 text-center bg-blue-50/70 border border-blue-100 rounded-2xl p-6 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-2 text-blue-700 font-semibold text-sm mb-1">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>{profile.availability || 'Available for Commissions'}</span>
+            <span>Status Komisi Saat Ini</span>
           </div>
+          <p className="text-gray-700 font-medium text-base">
+            {profile.availability || 'Terbuka untuk Komisi Bot BDFD & Desain PixelLab'}
+          </p>
         </div>
 
       </div>
