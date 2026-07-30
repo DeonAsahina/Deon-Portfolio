@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ProjectItem } from '../types';
-import { ExternalLink, Github, Eye } from 'lucide-react';
+import { Eye, Sparkles } from 'lucide-react';
 
 interface ProjectsSectionProps {
   projects: ProjectItem[];
@@ -65,9 +65,14 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               {/* Thumbnail Container */}
               <div className="relative overflow-hidden aspect-video bg-gray-100">
                 <img
-                  src={project?.image || (project as any)?.imageUrl || ''}
+                  src={project?.image || (project as any)?.imageUrl || 'https://images.unsplash.com/photo-1614680376593-902f749f71c3?auto=format&fit=crop&q=80&w=800'}
                   alt={project?.title || 'Project'}
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = 'https://images.unsplash.com/photo-1614680376593-902f749f71c3?auto=format&fit=crop&q=80&w=800';
+                  }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
@@ -116,29 +121,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                     <span>Read Case Study</span>
                     <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
                   </button>
-
-                  <div className="flex items-center space-x-2">
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 text-gray-400 hover:text-gray-700 transition-colors"
-                      aria-label="GitHub Repository"
-                    >
-                      <Github className="w-4 h-4" />
-                    </a>
-                    <a
-                      href={project.liveUrl}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        onSelectProject(project);
-                      }}
-                      className="p-1.5 text-gray-400 hover:text-blue-600 transition-colors"
-                      aria-label="Live Demo"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  </div>
                 </div>
               </div>
 
