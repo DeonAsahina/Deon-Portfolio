@@ -1,50 +1,65 @@
-export interface Project {
-  id: string;
+export interface HighlightItem {
+  icon: string;
   title: string;
-  category: 'bdfd' | 'pixellab' | 'all';
-  categoryLabel: string;
-  shortDescription: string;
-  fullDescription: string;
-  imageUrl: string;
-  tags: string[];
-  features: string[];
-  commandsCount?: number;
-  canvasSize?: string;
-  demoUrl?: string;
-  downloadUrl?: string;
-  date: string;
+  description: string;
 }
 
 export interface ProfileData {
   name: string;
   title: string;
-  bio: string;
+  tagline: string;
+  aboutText: string;
   avatarUrl: string;
   email: string;
   location: string;
   phone: string;
-  telegram?: string;
-  discord?: string;
+  whatsapp?: string;
+  telegram: string;
+  discord: string;
   availability: string;
   socials: {
     github: string;
+    linkedin: string;
     instagram: string;
     email: string;
   };
-  aboutText: string[];
-  stats: {
-    label: string;
-    value: string;
-  }[];
+  highlights: HighlightItem[];
 }
 
-export interface SkillCategory {
+export interface SkillItem {
+  id: string;
+  name: string;
+  category: 'bdfd' | 'design' | 'tools' | 'other';
+  level: number;
+  iconName?: string;
+  description?: string;
+}
+
+export interface ProjectItem {
+  id: string;
   title: string;
+  category: 'bdfd' | 'pixellab' | 'all';
   description: string;
-  skills: {
-    name: string;
-    level: string;
-    description: string;
-    icon: string;
-  }[];
+  longDescription?: string;
+  imageUrl: string;
+  tags: string[];
+  demoUrl?: string;
+  githubUrl?: string;
+  featured?: boolean;
+}
+
+export interface ExperienceItem {
+  id: string;
+  role: string;
+  company: string;
+  period: string;
+  description: string;
+}
+
+export interface EducationItem {
+  id: string;
+  degree: string;
+  institution: string;
+  period: string;
+  description: string;
 }
