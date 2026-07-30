@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { initialProfileData, sampleProjects } from './data/portfolioData';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutSection } from './components/AboutSection';
@@ -9,93 +10,40 @@ import { Footer } from './components/Footer';
 import { EditProfileModal } from './components/EditProfileModal';
 import { CVModal } from './components/CVModal';
 import { ProjectDetailModal } from './components/ProjectDetailModal';
+import { Project } from './types';
 
-import {
-  initialProfileData,
-  initialSkills,
-  initialProjects,
-  initialExperiences,
-  initialEducations,
-} from './data/portfolioData';
+export function App() {
+  const [profile, setProfile] = useState(initialProfileData);
+  const [projects] = useState(sampleProjects);
 
-import { ProfileData, ProjectItem } from './types';
-
-export default function App() {
-  const [activeSection, setActiveSection] = useState<string>('home');
-  const [profile, setProfile] = useState<ProfileData>(() => {
-    const saved = localStorage.getItem('portfolio_profile_v12');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed.name && parsed.name !== 'Rizky Pratama') {
-          return parsed;
-        }
-      } catch (e) {
-        console.error('Failed to parse saved profile:', e);
-      }
-    }
-    return initialProfileData;
-  });
-
-  const [skills] = useState(initialSkills);
-  const [projects] = useState(initialProjects);
-  const [experiences] = useState(initialExperiences);
-  const [educations] = useState(initialEducations);
-
+  // Modals
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCVModalOpen, setIsCVModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
-
-  // Sync profile to localStorage when edited
-  useEffect(() => {
-    localStorage.setItem('portfolio_profile_v12', JSON.stringify(profile));
-  }, [profile]);
-
-  const handleSaveProfile = (updatedProfile: ProfileData) => {
-    setProfile(updatedProfile);
-  };
-
-  const handleResetProfile = () => {
-    localStorage.removeItem('portfolio_profile_v12');
-    localStorage.removeItem('portfolio_profile_v11');
-    localStorage.removeItem('portfolio_profile_v10');
-    localStorage.removeItem('portfolio_profile_v9');
-    localStorage.removeItem('portfolio_profile_v8');
-    localStorage.removeItem('portfolio_profile_v7');
-    localStorage.removeItem('portfolio_profile_v6');
-    localStorage.removeItem('portfolio_profile_v5');
-    localStorage.removeItem('portfolio_profile_v4');
-    localStorage.removeItem('portfolio_profile_v3');
-    localStorage.removeItem('portfolio_profile_v2');
-    localStorage.removeItem('portfolio_profile');
-    setProfile(initialProfileData);
-  };
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans antialiased selection:bg-blue-100 selection:text-blue-700">
-      
-      {/* Top Navbar */}
+      {/* Navigation */}
       <Navbar
-        activeSection={activeSection}
-        setActiveSection={setActiveSection}
+        profile={profile}
         onOpenEditModal={() => setIsEditModalOpen(true)}
         onOpenCVModal={() => setIsCVModalOpen(true)}
-        profileName={profile.name}
       />
 
-      {/* Main Content Sections */}
+      {/* Main Content */}
       <main>
         {/* Hero Section */}
-        <Hero profile={profile} onOpenEditProfile={() => setIsEditModalOpen(true)} />
-
-        {/* About Me Section */}
-        <AboutSection
+        <Hero
           profile={profile}
-          onOpenCVModal={() => setIsCVModalOpen(true)}
+          onOpenCV={() => setIsCVModalOpen(true)}
+          onOpenEditProfile={() => setIsEditModalOpen(true)}
         />
 
+        {/* About Section */}
+        <AboutSection profile={profile} />
+
         {/* Skills Section */}
-        <SkillsSection skills={skills} />
+        <SkillsSection />
 
         {/* Projects Section */}
         <ProjectsSection
@@ -110,30 +58,33 @@ export default function App() {
       {/* Footer */}
       <Footer profile={profile} />
 
-      {/* Customize Profile Modal */}
-      <EditProfileModal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        profile={profile}
-        onSaveProfile={handleSaveProfile}
-        onResetDefault={handleResetProfile}
-      />
+      {/* Modals */}
+      {isEditModalOpen && (
+        <EditProfileModal
+          profile={profile}
+          onSave={(updated) => {
+            setProfile(updated);
+            setIsEditModalOpen(false);
+          }}
+          onClose={() => setIsEditModalOpen(false)}
+        />
+      )}
 
-      {/* CV Resume Preview Modal */}
-      <CVModal
-        isOpen={isCVModalOpen}
-        onClose={() => setIsCVModalOpen(false)}
-        profile={profile}
-        experiences={experiences}
-        educations={educations}
-      />
+      {isCVModalOpen && (
+        <CVModal
+          profile={profile}
+          onClose={() => setIsCVModalOpen(false)}
+        />
+      )}
 
-      {/* Project Details Case Study Modal */}
-      <ProjectDetailModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
-
+      {selectedProject && (
+        <ProjectDetailModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+      )}
     </div>
   );
 }
+
+export default App;
