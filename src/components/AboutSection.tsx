@@ -39,7 +39,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ profile, onOpenCVMod
               <div className="w-12 h-1 bg-blue-600 rounded-full mt-2" />
             </div>
 
-            {/* Render Paragraf Aman (Penanganan String & Array) */}
             <div className="text-gray-600 text-base leading-relaxed space-y-3">
               {Array.isArray(profile?.aboutText)
                 ? (profile.aboutText as string[]).map((paragraph, index) => (
