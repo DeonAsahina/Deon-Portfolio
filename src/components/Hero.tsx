@@ -69,7 +69,11 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
               )}
               {profile?.socials?.instagram && (
                 <a
-                  href={profile.socials.instagram}
+                  href={
+                    profile.socials.instagram.startsWith('http')
+                      ? profile.socials.instagram
+                      : `https://instagram.com/${profile.socials.instagram.replace(/^@/, '')}`
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
