@@ -47,7 +47,7 @@ export const initialProjects: ProjectItem[] = [
     category: 'Discord Bot',
     description: 'A multi-purpose Discord bot built with Bot Designer for Discord (BScript) featuring moderation, economy, leveling, ticket, giveaway, and utility commands.',
     longDescription: 'Created using BDFD (Bot Designer for Discord) and BDScript. Features include customizable server moderation commands, leveling system, tickets, giveaways, slash commands, interactive buttons, and custom embeds.',
-    image: 'https://ibb.co.com/SXCgpfjF',
+    image: 'https://i.ibb.co.com/svY4rWf8/IMG-20260730-214011.jpg',
     tags: ['BDFD', 'BDScript', 'Discord Bot', 'Caelyn'],
     liveUrl: '#',
     githubUrl: 'https://github.com',
