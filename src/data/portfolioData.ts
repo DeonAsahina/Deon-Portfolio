@@ -5,7 +5,7 @@ export const initialProfileData: ProfileData = {
   title: 'BDFD Bot Developer & PixelLab Graphic Designer',
   bio: 'Spesialis dalam pembuatan bot Discord interaktif berbasis BDFD (Bot Designer for Discord) dan desain grafis kreatif seluler menggunakan PixelLab.',
   avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600',
-  email: 'deon.dev@example.com',
+  email: 'deon2669@gmail.com',
   location: 'Indonesia',
   phone: '+62 858 2334 2058',
   telegram: '@deonats',
