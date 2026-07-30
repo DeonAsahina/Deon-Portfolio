@@ -33,6 +33,8 @@ export const initialProfileData: ProfileData = {
   ],
 };
 
+export const skillCategories = ['Tools & Design'];
+
 export const initialSkills: SkillItem[] = [
   { name: 'Bot Designer for Discord (BDFD)', level: 98, category: 'Tools & Design' },
   { name: 'PixelLab', level: 95, category: 'Tools & Design' },
