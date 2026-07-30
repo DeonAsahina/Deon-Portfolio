@@ -26,15 +26,15 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
                 Hi, I'm
               </span>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
-                {profile.name}
+                {profile?.name}
               </h1>
               <h2 className="text-2xl sm:text-3xl font-medium text-gray-500 pt-1">
-                {profile.title}
+                {profile?.title}
               </h2>
             </div>
 
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed max-w-lg">
-              {profile.tagline}
+              {profile?.tagline}
             </p>
 
             {/* Action Buttons */}
@@ -56,7 +56,7 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
 
             {/* Social Icons */}
             <div className="flex items-center space-x-5 pt-4 text-gray-700">
-              {profile.socials.github && (
+              {profile?.socials?.github && (
                 <a
                   href={profile.socials.github}
                   target="_blank"
@@ -67,7 +67,7 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
                   <Github className="w-5 h-5" />
                 </a>
               )}
-              {profile.socials.instagram && (
+              {profile?.socials?.instagram && (
                 <a
                   href={profile.socials.instagram}
                   target="_blank"
@@ -102,8 +102,8 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
                 
                 {/* Profile Image (Circular) */}
                 <img
-                  src={profile.avatarUrl}
-                  alt={profile.name}
+                  src={profile?.avatarUrl || (profile as any)?.imageUrl || ''}
+                  alt={profile?.name || 'Profile'}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover rounded-full"
                 />
