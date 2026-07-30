@@ -4,59 +4,64 @@ import { ProfileData } from '../types';
 
 interface HeroProps {
   profile: ProfileData;
+  onOpenCV: () => void;
   onOpenEditProfile?: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ profile }) => {
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+  const scrollToContact = () => {
+    const contactElem = document.getElementById('contact');
+    if (contactElem) {
+      contactElem.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToProjects = () => {
+    const projectsElem = document.getElementById('projects');
+    if (projectsElem) {
+      projectsElem.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <section id="home" className="pt-28 pb-16 md:pt-36 md:pb-24 bg-white overflow-hidden">
+    <section id="hero" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-gradient-to-b from-blue-50/40 via-white to-white">
       <div className="max-w-6xl mx-auto px-6 sm:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left Column: Text & CTA */}
-          <div className="lg:col-span-6 space-y-6 text-left z-10">
-            <div className="space-y-2">
-              <span className="text-blue-600 font-semibold text-lg sm:text-xl tracking-wide block">
-                Hi, I'm
-              </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
-                {profile.name}
-              </h1>
-              <h2 className="text-2xl sm:text-3xl font-medium text-gray-500 pt-1">
-                {profile.title}
-              </h2>
+          {/* Left Text Column */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+              <span>{profile.title}</span>
             </div>
 
-            <p className="text-gray-600 text-base sm:text-lg leading-relaxed max-w-lg">
-              {profile.tagline}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-[1.1]">
+              Kreasikan Bot Discord & Visual <span className="text-blue-600 underline decoration-blue-200 underline-offset-4">PixelLab</span>
+            </h1>
+
+            <p className="text-gray-600 text-base sm:text-lg leading-relaxed max-w-2xl font-normal">
+              {profile.bio}
             </p>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="pt-2 flex flex-wrap items-center gap-3">
               <button
-                onClick={() => scrollTo('projects')}
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm sm:text-base rounded-xl transition-all duration-200 shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 flex items-center gap-2"
+                onClick={scrollToProjects}
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
               >
-                <span>View My Work</span>
+                View My Work
               </button>
 
               <button
-                onClick={() => scrollTo('contact')}
-                className="px-6 py-3 bg-white hover:bg-gray-50 text-gray-800 font-medium text-sm sm:text-base rounded-xl transition-all duration-200 border border-gray-200 shadow-sm hover:border-gray-300"
+                onClick={scrollToContact}
+                className="px-6 py-3 bg-white hover:bg-gray-50 text-gray-800 font-semibold text-sm rounded-xl border border-gray-200 shadow-sm transition-all duration-200"
               >
-                <span>Contact Me</span>
+                Contact Me
               </button>
             </div>
 
             {/* Social Icons */}
-            <div className="flex items-center space-x-5 pt-4 text-gray-700">
+            <div className="pt-4 flex items-center gap-4">
               {profile.socials.github && (
                 <a
                   href={profile.socials.github}
@@ -82,20 +87,10 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
             </div>
           </div>
 
-          {/* Right Column: Profile Image */}
-          <div className="lg:col-span-6 flex justify-center lg:justify-end relative">
-            <div className="relative w-full max-w-md">
-              
-              {/* Dot Grid Matrix Accent */}
-              <div className="absolute -top-4 -right-4 z-0 hidden sm:block">
-                <div className="grid grid-cols-5 gap-2.5">
-                  {Array.from({ length: 15 }).map((_, i) => (
-                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-blue-300 opacity-80" />
-                  ))}
-                </div>
-              </div>
-
-              {/* Large Arch Soft Backdrop */}
+          {/* Right Image/Avatar Column */}
+          <div className="lg:col-span-5 flex justify-center">
+            <div className="relative w-full max-w-sm sm:max-w-md">
+              {/* Background Arch Shape */}
               <div className="absolute bottom-0 right-0 left-0 top-8 bg-gradient-to-b from-blue-100/70 to-indigo-50/50 rounded-t-[180px] rounded-b-[40px] z-0 shadow-inner" />
 
               {/* Profile Headshot Image */}
@@ -103,7 +98,6 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
                 <img
                   src={profile.avatarUrl}
                   alt={profile.name}
-                  referrerPolicy="no-referrer"
                   className="w-full max-w-[340px] sm:max-w-[380px] h-auto object-cover rounded-t-[160px] rounded-b-[30px] drop-shadow-md transition-transform duration-300 hover:scale-[1.01]"
                 />
               </div>
