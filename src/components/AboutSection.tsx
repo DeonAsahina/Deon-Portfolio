@@ -1,13 +1,12 @@
 import React from 'react';
-import { Rocket, Code, User, Download } from 'lucide-react';
+import { Rocket, Code, User } from 'lucide-react';
 import { ProfileData } from '../types';
 
 interface AboutSectionProps {
   profile: ProfileData;
-  onOpenCVModal: () => void;
 }
 
-export const AboutSection: React.FC<AboutSectionProps> = ({ profile, onOpenCVModal }) => {
+export const AboutSection: React.FC<AboutSectionProps> = ({ profile }) => {
   const getHighlightIcon = (iconType: string) => {
     switch (iconType) {
       case 'rocket':
@@ -49,16 +48,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ profile, onOpenCVMod
                     <p key={index}>{paragraph}</p>
                   ))
                 : null}
-            </div>
-
-            <div className="pt-2">
-              <button
-                onClick={onOpenCVModal}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-blue-50 text-blue-600 font-medium text-sm rounded-xl border border-blue-200 shadow-sm transition-all duration-200 hover:border-blue-300"
-              >
-                <span>Download CV</span>
-                <Download className="w-4 h-4" />
-              </button>
             </div>
           </div>
 
