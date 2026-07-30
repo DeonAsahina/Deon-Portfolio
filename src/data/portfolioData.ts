@@ -7,9 +7,9 @@ export const initialProfileData: ProfileData = {
   avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600',
   email: 'deon.dev@example.com',
   location: 'Indonesia',
-  phone: '+62 812 3456 7890',
-  telegram: '@deon_dev',
-  discord: 'deon_dev',
+  phone: '+62 858 2334 2058',
+  telegram: '@deonats',
+  discord: 'deonhere.',
   availability: 'Available for BDFD Bot & PixelLab Design Commissions',
   socials: {
     github: 'https://github.com',
