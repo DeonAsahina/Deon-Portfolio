@@ -4,7 +4,6 @@ import { ProfileData } from '../types';
 
 interface HeroProps {
   profile: ProfileData;
-  onOpenEditProfile?: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ profile }) => {
@@ -62,7 +61,7 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
                   href={profile.socials.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-colors"
+                  className="p-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                   aria-label="GitHub"
                 >
                   <Github className="w-5 h-5" />
@@ -73,7 +72,7 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
                   href={profile.socials.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-colors"
+                  className="p-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-5 h-5" />
@@ -82,19 +81,42 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
             </div>
           </div>
 
-          {/* Right Column: Visual Photo */}
-          <div className="lg:col-span-6 flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[420px]">
-              {/* Background Arch Shape */}
-              <div className="absolute bottom-0 right-0 left-0 top-8 bg-gradient-to-b from-blue-100/70 to-indigo-50/50 rounded-t-[180px] rounded-b-[40px] z-0 shadow-inner" />
+          {/* Right Column: Circular Profile Image with Discord Avatar Decoration */}
+          <div className="lg:col-span-6 flex justify-center lg:justify-end relative">
+            <div className="relative flex items-center justify-center p-4">
+              
+              {/* Soft Ambient Glow */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-400/20 via-indigo-300/20 to-purple-400/20 rounded-full blur-2xl transform scale-110 -z-10" />
 
-              {/* Profile Headshot Image */}
-              <div className="relative z-10 flex justify-center pt-6 px-4">
+              {/* Dot Grid Matrix Accent (Top Right) */}
+              <div className="absolute -top-2 -right-2 z-0 hidden sm:block">
+                <div className="grid grid-cols-5 gap-2.5">
+                  {Array.from({ length: 15 }).map((_, i) => (
+                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-blue-300 opacity-80" />
+                  ))}
+                </div>
+              </div>
+
+              {/* Circular Avatar Wrapper */}
+              <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full border-4 border-white shadow-2xl bg-slate-100 flex items-center justify-center group transition-transform duration-300 hover:scale-[1.02]">
+                
+                {/* Profile Image (Circular) */}
                 <img
                   src={profile.avatarUrl}
                   alt={profile.name}
-                  className="w-full max-w-[340px] sm:max-w-[380px] h-auto object-cover rounded-t-[160px] rounded-b-[30px] drop-shadow-md transition-transform duration-300 hover:scale-[1.01]"
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover rounded-full"
                 />
+
+                {/* Discord Avatar Decoration Overlay */}
+                {profile.avatarDecorationUrl && (
+                  <img
+                    src={profile.avatarDecorationUrl}
+                    alt="Discord Avatar Decoration"
+                    referrerPolicy="no-referrer"
+                    className="absolute -inset-[12%] w-[124%] h-[124%] max-w-none object-contain pointer-events-none z-20 select-none"
+                  />
+                )}
               </div>
 
             </div>
