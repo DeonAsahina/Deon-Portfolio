@@ -5,7 +5,7 @@ export const initialProfileData: ProfileData = {
   title: 'Discord Bot Developer & Graphic Designer',
   tagline: 'I build custom Discord bots using Bot Designer for Discord (BDFD) and create graphics with PixelLab.',
   aboutText: "I'm Deon, a passionate Discord Bot Developer and Graphic Designer. I build custom Discord bots with Bot Designer for Discord (BDFScript) and create clean, eye-catching graphics, including posters, banners, and typography using PixelLab.\n\nOutside of development and design, I enjoy swimming, riding motorcycles, watching anime, donghua, dramas, and movies, as well as exploring new ideas and learning new things.",
-  avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800',
+  avatarUrl: 'https://ibb.co.com/3KMXySV',
   email: 'deon.dev@example.com',
   location: 'Indonesia',
   phone: '+62 812 3456 7890',
