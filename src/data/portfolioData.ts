@@ -4,7 +4,7 @@ export const initialProfileData: ProfileData = {
   name: 'Deon',
   title: 'Discord Bot Developer & Graphic Designer',
   tagline: 'I build custom Discord bots using Bot Designer for Discord (BDFD) and create graphics with PixelLab.',
-  aboutText: "I'm Deon, a passionate Discord Bot Developer and Graphic Designer. I build custom Discord bots with Bot Designer for Discord (BDFScript) and create clean, eye-catching graphics, including posters, banners, and typography using PixelLab.\n\nOutside of development and design, I enjoy swimming, riding motorcycles, watching anime, donghua, dramas, and movies, as well as exploring new ideas and learning new things.",
+  aboutText: "I'm Deon, a passionate Discord Bot Developer and Graphic Designer. I build custom Discord bots with Bot Designer For Discord (BDFD) and create clean, eye-catching graphics, including posters, banners, and typography using PixelLab.\n\nOutside of development and design, I enjoy swimming, riding motorcycles, watching anime, donghua, dramas, and movies, as well as exploring new ideas and learning new things.",
   avatarUrl: 'https://cdn.discordapp.com/avatars/737946187830919218/5acee13e768245ccb9eb6992af9a47ad.png?size=512',
   avatarDecorationUrl: 'https://cdn.discordapp.com/avatar-decoration-presets/a_8d31b6b853913a2811916a2d8678b747.png?size=512',
   email: 'deon2669@gmail.com',
